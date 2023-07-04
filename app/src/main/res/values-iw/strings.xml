@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BarkPark</string>
+    <string name="login">התחבר/י</string>
+    <string name="register">הירשם/י</string>
+    <string name="forgot_password">שכחת סיסמא?</string>
+    <string name="signup">הרשמה</string>
+    <string name="choose_a_username">בחר/י שם משתמש</string>
+    <string name="choose_a_password">בחר/י סיסמא</string>
+    <string name="enter_your_email">הכנס/י אימייל</string>
+    <string name="sign_up">הרשמה</string>
+    <string name="enter_your_email2">הכנס/י אימייל</string>
+    <string name="add_a_new_family_member">צרפו חבר חדש למשפחה!</string>
+    <string name="enter_dog_s_name">שם הכלב/ה</string>
+    <string name="enter_dog_s_breed">סוג הכלב/ה</string>
+    <string name="puppy">גור/ה</string>
+    <string name="adult">בוגר/ת</string>
+    <string name="old">זקן/ה</string>
+    <string name="male">זכר</string>
+    <string name="female">נקבה</string>
+    <string name="add_image">צרף/י תמונה</string>
+    <string name="finish">סיום</string>
+    <string name="cancel">ביטול</string>
+    <string name="long_click_to_delete">*לחיצה ארוכה למחיקה</string>
+    <string name="enter_your_password">הכנס/י סיסמא</string>
+    <string name="my_dogs">הכלבים שלי</string>
+    <string name="edit_profile">עריכת הפרופיל</string>
+    <string name="choose_a_new_username">שם משתמש חדש</string>
+    <string name="enter_new_phone_number">מספר טלפון חדש</string>
+
+
+</resources>

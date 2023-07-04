@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">BarkPark</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="signup">Signup</string>
+    <string name="choose_a_username">Choose a username</string>
+    <string name="choose_a_password">Choose a password</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="enter_your_email2">Enter your email</string>
+    <string name="add_a_new_family_member">Add a new Family member!</string>
+    <string name="enter_dog_s_name">Enter dog\'s name</string>
+    <string name="enter_dog_s_breed">Enter dog\'s breed</string>
+    <string name="puppy">Puppy</string>
+    <string name="adult">Adult</string>
+    <string name="old">Old</string>
+    <string name="male">male</string>
+    <string name="female">female</string>
+    <string name="add_image">Add Image</string>
+    <string name="finish">Finish</string>
+    <string name="cancel">Cancel</string>
+    <string name="long_click_to_delete">*Long click to delete</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="my_dogs">My Dogs</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="choose_a_new_username">Choose a new Username</string>
+    <string name="enter_new_phone_number">Enter new phone number</string>
+</resources>

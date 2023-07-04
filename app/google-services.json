@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "449106615602",
+    "project_id": "barkpark-606d9",
+    "storage_bucket": "barkpark-606d9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449106615602:android:8fe35b65bf8aa7e9d70b2b",
+        "android_client_info": {
+          "package_name": "com.example.barkpark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "449106615602-dlqaalgeueop57mco9rkrjr1ddk3058j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnDqYckTqCqPauMxcUGYSVm-fNHJ8ZLe8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "449106615602-dlqaalgeueop57mco9rkrjr1ddk3058j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
