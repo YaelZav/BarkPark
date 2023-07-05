@@ -98,12 +98,26 @@
 
                     </LinearLayout>
 
+                    <CheckBox
+                        android:id="@+id/group_by_gender_checkbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Group by Gender?"/>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:id="@+id/dogs_recycler"
                         android:layout_margin="8dp"/>
+
+
+                        <TextView
+                            android:id="@+id/dog_breed_reduction_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:layout_width="wrap_content"

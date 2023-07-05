@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
-    private var binding : LoginLayoutBinding by autoCleared()
+    private var binding : LoginLayoutBinding? = null // by autoCleared()
     private val viewModel : LoginViewModel by viewModels {
         LoginViewModel.LoginViewModelFactory(AuthRepositoryFirebase())
     }
@@ -31,31 +31,31 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = LoginLayoutBinding.inflate(inflater,container,false)
-
-        binding.registerBtn.setOnClickListener {
+        val fixedBinding = binding!!
+        fixedBinding.registerBtn.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
         }
 
-        binding.loginBtn.setOnClickListener {
+        fixedBinding.loginBtn.setOnClickListener {
 
-            viewModel.signInUser(binding.emailEt?.text.toString(),
-            binding.passwordEt?.text.toString())
+            viewModel.signInUser(fixedBinding.emailEt?.text.toString(),
+                fixedBinding.passwordEt?.text.toString())
         }
 
-        binding.forgotPasswordBtn.setOnClickListener {
+        fixedBinding.forgotPasswordBtn.setOnClickListener {
             viewModel.viewModelScope.launch {
-                if (binding.emailEt.text.isEmpty())
+                if (fixedBinding.emailEt.text.isEmpty())
                     Toast.makeText(requireContext(), "Required Email", Toast.LENGTH_SHORT).show()
-                else if (!Patterns.EMAIL_ADDRESS.matcher(binding.emailEt.text).matches())
+                else if (!Patterns.EMAIL_ADDRESS.matcher(fixedBinding.emailEt.text).matches())
                     Toast.makeText(requireContext(), "Email is badly formatted", Toast.LENGTH_SHORT).show()
                 else {
-                    viewModel.forgotPassword(binding.emailEt.text.toString())
+                    viewModel.forgotPassword(fixedBinding.emailEt.text.toString())
                     delay(1000)
                     Toast.makeText(requireContext(), "Password sent to email", Toast.LENGTH_SHORT).show()
                 }
             }
         }
-        return binding.root
+        return fixedBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,16 +65,16 @@ class LoginFragment : Fragment() {
 
             when(it){
                 is Resource.Loading -> {
-                    binding.loginProgress.isVisible = true
-                    binding.loginBtn.isEnabled = false
+                    binding!!.loginProgress.isVisible = true
+                    binding!!.loginBtn.isEnabled = false
                 }
                 is Resource.Success -> {
                     Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
                 }
                 is Resource.Error -> {
-                    binding.loginProgress.isVisible = false
-                    binding.loginBtn.isEnabled = true
+                    binding!!.loginProgress.isVisible = false
+                    binding!!.loginBtn.isEnabled = true
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -84,15 +84,15 @@ class LoginFragment : Fragment() {
 
             when(it){
                 is Resource.Loading -> {
-                    binding.loginProgress.isVisible = true
-                    binding.loginBtn.isEnabled = false
+                    binding!!.loginProgress.isVisible = true
+                    binding!!.loginBtn.isEnabled = false
                 }
                 is Resource.Success -> {
                     findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
                 }
                 is Resource.Error -> {
-                    binding.loginProgress.isVisible = false
-                    binding.loginBtn.isEnabled = true
+                    binding!!.loginProgress.isVisible = false
+                    binding!!.loginBtn.isEnabled = true
                 }
             }
         }

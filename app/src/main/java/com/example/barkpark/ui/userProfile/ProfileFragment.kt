@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.*
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,12 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.barkpark.R
 import com.example.barkpark.databinding.ProfileLayoutBinding
+import com.example.barkpark.model.DogItem
 import com.example.barkpark.model.ItemManager
 import com.example.barkpark.repository.firebasempl.AuthRepositoryFirebase
 import com.example.barkpark.repository.firebasempl.FireStoreRepositoryFirebase
 import com.example.barkpark.repository.firebasempl.FirestorageRepositoryFirebase
 import com.example.barkpark.util.Resource
 import com.example.barkpark.util.autoCleared
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -47,29 +50,69 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_addDogItemFragment)
         }
 
+        binding.groupByGenderCheckbox.setOnClickListener {
+            updateDogRecyclerView()
+        }
+
         return binding.root
+    }
+
+    fun updateDogRecyclerView() {
+        val groupByGender = binding.groupByGenderCheckbox.isChecked
+
+        val task = if (groupByGender)
+            FirebaseFirestore.getInstance().collection("dogs").
+            orderBy("gender").get()
+        else FirebaseFirestore.getInstance().collection("dogs").get()
+
+        task.addOnCompleteListener() {
+                if(it.isSuccessful) {
+                    ItemManager.items.clear()
+                    val breedMap = mutableMapOf<String, Int>()
+
+
+                    for(query in it.result) {
+                        val dogItem =  query.toObject(DogItem::class.java)
+                        ItemManager.items.add(dogItem)
+
+                        if(!breedMap.containsKey(dogItem.breed))
+                            breedMap[dogItem.breed] = 0
+                        breedMap[dogItem.breed] = breedMap[dogItem.breed]!! + 1
+                    }
+
+                    val breedCountList = breedMap.map()
+                        { "${it.key}: ${it.value} dogs" }.toList()
+                    val breedCountString = breedCountList.joinToString("\n")
+
+                    binding.dogBreedReductionTextView.text = breedCountString
+
+
+                    binding.dogsRecycler.adapter = ProfileAdapter(ItemManager.items,
+                        object : ProfileAdapter.DogListener {
+                        override fun onDogClicked(index: Int) {
+
+                        }
+                        override fun onDogLongClicked(index: Int) {
+                            if(ItemManager.items[index].photo != ""){
+                                viewModel.deleteDogpic(ItemManager.items[index].Id)
+                            }
+                            else{
+                                viewModel.deleteDog(ItemManager.items[index].Id)
+                            }
+                            ItemManager.remove(index)
+                            binding.dogsRecycler.adapter!!.notifyItemRemoved(index)
+                            viewModel.getDogs(viewModel.currentUser.value!!.data?.id!!)
+                        }
+                    })
+                }
+            }
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.dogsRecycler.adapter = ProfileAdapter(ItemManager.items, object : ProfileAdapter.DogListener {
-            override fun onDogClicked(index: Int) {
-
-            }
-            override fun onDogLongClicked(index: Int) {
-                if(ItemManager.items[index].photo != ""){
-                    viewModel.deleteDogpic(ItemManager.items[index].Id)
-                }
-                else{
-                    viewModel.deleteDog(ItemManager.items[index].Id)
-                }
-                ItemManager.remove(index)
-                binding.dogsRecycler.adapter!!.notifyItemRemoved(index)
-                viewModel.getDogs(viewModel.currentUser.value!!.data?.id!!)
-            }
-        })
+        updateDogRecyclerView()
 
         binding.dogsRecycler.layoutManager = LinearLayoutManager(requireContext())
 
@@ -109,11 +152,11 @@ class ProfileFragment : Fragment() {
                             binding.imgProfile.setImageBitmap(byteArrayToBitmap(viewModel.curUserMap.value!!.data!!))
                         }
                         if(ItemManager.items.isEmpty())
-                        for(dog in viewModel.dogStatus.value?.data!!){
-                            ItemManager.add(dog)
+                            for(dog in viewModel.dogStatus.value?.data!!){
+                                ItemManager.add(dog)
 
 
-                        }
+                            }
                     }
 
                 }

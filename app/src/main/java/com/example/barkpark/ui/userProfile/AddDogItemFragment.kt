@@ -3,6 +3,7 @@ package com.example.barkpark.ui.userProfile
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.inputmethodservice.Keyboard
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,6 +32,8 @@ import com.example.barkpark.repository.firebasempl.FirestorageRepositoryFirebase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+
+
 
 class AddDogItemFragment : Fragment() {
 
@@ -128,6 +131,7 @@ class AddDogItemFragment : Fragment() {
 
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
