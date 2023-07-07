@@ -1,5 +1,6 @@
 package com.example.barkpark.ui.userProfile
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -12,8 +13,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -32,8 +35,6 @@ import com.example.barkpark.repository.firebasempl.FirestorageRepositoryFirebase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
-
-
 
 class AddDogItemFragment : Fragment() {
 
@@ -59,20 +60,47 @@ class AddDogItemFragment : Fragment() {
             imageUri = it
         }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = AddDogItemBinding.inflate(inflater, container, false)
+
+        var edit = arguments?.getBoolean("edit", false)
+        if (edit != null && edit) {
+
+            val name = arguments?.getString("name")
+            val breed = arguments?.getString("breed")
+            val age = arguments?.getString("age")
+            val gender = arguments?.getString("gender")
+
+            binding.addDogTitle.text = "Edit existing dog"
+
+            binding.dogNameET.setText(name.orEmpty())
+            binding.dogBreedET.setText(breed.orEmpty())
+
+            when (age.orEmpty()) {
+                "puppy" -> binding.puppyRadio.isChecked = true
+                "adult" -> binding.adultRadio.isChecked = true
+                "old" -> binding.oldRadio.isChecked = true
+            }
+
+            when (gender.orEmpty()) {
+                "male" -> binding.maleRadio.isChecked = true
+                "female" -> binding.femaleRadio.isChecked = true
+            }
+
+            binding.addDogCancel.isVisible = false
+        }
+
         binding.progressAddDogItem.isVisible = false
         binding.addDogFinish.setOnClickListener {
 
             if (binding.dogAgeRadioG.checkedRadioButtonId == -1 || binding.dogGenderRadioG.checkedRadioButtonId == -1) {
                 Error("Must choose options")
             }
-
 
             var dogAge = if (binding.puppyRadio.isChecked)
                 "puppy"
@@ -90,14 +118,11 @@ class AddDogItemFragment : Fragment() {
             else
                 "Not Picked"
 
-
             val item = DogItem(imageUri.toString(),
                 binding.dogNameET.text.toString(),
                 binding.dogBreedET.text.toString(),
                 dogAge,
                 dogGender)
-
-
 
             if(binding.addedImage.drawable != null) {
                 binding.addedImage.isDrawingCacheEnabled = true
@@ -118,7 +143,6 @@ class AddDogItemFragment : Fragment() {
                 delay(1200)
                 findNavController().navigate(R.id.action_addDogItemFragment_to_profileFragment)
             }
-
         }
 
         binding.addDogImage.setOnClickListener {

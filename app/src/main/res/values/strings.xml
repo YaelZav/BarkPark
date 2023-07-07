@@ -20,7 +20,7 @@
     <string name="add_image">Add Image</string>
     <string name="finish">Finish</string>
     <string name="cancel">Cancel</string>
-    <string name="long_click_to_delete">*Long click to delete</string>
+    <string name="long_click_to_delete">*Short click to edit *Long click to delete</string>
     <string name="enter_your_password">Enter your password</string>
     <string name="my_dogs">My Dogs</string>
     <string name="edit_profile">Edit Profile</string>

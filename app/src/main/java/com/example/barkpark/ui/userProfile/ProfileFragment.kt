@@ -1,12 +1,16 @@
 package com.example.barkpark.ui.userProfile
 
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.clearFragmentResultListener
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -86,13 +90,9 @@ class ProfileFragment : Fragment() {
 
                     binding.dogBreedReductionTextView.text = breedCountString
 
-
                     binding.dogsRecycler.adapter = ProfileAdapter(ItemManager.items,
                         object : ProfileAdapter.DogListener {
-                        override fun onDogClicked(index: Int) {
-
-                        }
-                        override fun onDogLongClicked(index: Int) {
+                        fun deleteDog(index: Int) {
                             if(ItemManager.items[index].photo != ""){
                                 viewModel.deleteDogpic(ItemManager.items[index].Id)
                             }
@@ -102,6 +102,16 @@ class ProfileFragment : Fragment() {
                             ItemManager.remove(index)
                             binding.dogsRecycler.adapter!!.notifyItemRemoved(index)
                             viewModel.getDogs(viewModel.currentUser.value!!.data?.id!!)
+                        }
+                        override fun onDogClicked(index: Int) {
+                            val dog = ItemManager.items[index]
+                            val bundle = bundleOf("edit" to true, "name" to dog.name, "breed" to dog.breed, "age" to dog.age, "gender" to dog.gender)
+                            deleteDog(index)
+                            Thread.sleep(200)
+                            findNavController().navigate(R.id.action_profileFragment_to_addDogItemFragment, bundle)
+                        }
+                        override fun onDogLongClicked(index: Int) {
+                            deleteDog(index)
                         }
                     })
                 }
@@ -131,6 +141,7 @@ class ProfileFragment : Fragment() {
                 TODO("Not yet implemented")
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 ItemManager.remove(viewHolder.adapterPosition)
                 binding.dogsRecycler.adapter!!.notifyDataSetChanged()
