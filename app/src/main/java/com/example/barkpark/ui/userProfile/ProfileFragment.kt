@@ -107,7 +107,7 @@ class ProfileFragment : Fragment() {
                             val dog = ItemManager.items[index]
                             val bundle = bundleOf("edit" to true, "name" to dog.name, "breed" to dog.breed, "age" to dog.age, "gender" to dog.gender)
                             deleteDog(index)
-                            Thread.sleep(200)
+                            Thread.sleep(2000)
                             findNavController().navigate(R.id.action_profileFragment_to_addDogItemFragment, bundle)
                         }
                         override fun onDogLongClicked(index: Int) {
@@ -158,16 +158,13 @@ class ProfileFragment : Fragment() {
                     val newName = viewModel.currentUser.value?.data?.name
                     binding.usernameProfile.text = newName
                     lifecycleScope.launch {
-                        delay(2000)
-                        if(viewModel.curUserMap.value!!.data!! != null) {
-                            binding.imgProfile.setImageBitmap(byteArrayToBitmap(viewModel.curUserMap.value!!.data!!))
+                        if (viewModel.curUserMap.value != null && viewModel.curUserMap.value?.data != null) {
+                            binding.imgProfile.setImageBitmap(byteArrayToBitmap(viewModel.curUserMap.value?.data!!))
+                            if (ItemManager.items.isEmpty())
+                                for (dog in viewModel.dogStatus.value?.data!!) {
+                                    ItemManager.add(dog)
+                                }
                         }
-                        if(ItemManager.items.isEmpty())
-                            for(dog in viewModel.dogStatus.value?.data!!){
-                                ItemManager.add(dog)
-
-
-                            }
                     }
 
                 }
