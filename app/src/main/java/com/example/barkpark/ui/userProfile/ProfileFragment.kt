@@ -158,12 +158,17 @@ class ProfileFragment : Fragment() {
                     val newName = viewModel.currentUser.value?.data?.name
                     binding.usernameProfile.text = newName
                     lifecycleScope.launch {
-                        if (viewModel.curUserMap.value != null && viewModel.curUserMap.value?.data != null) {
-                            binding.imgProfile.setImageBitmap(byteArrayToBitmap(viewModel.curUserMap.value?.data!!))
-                            if (ItemManager.items.isEmpty())
-                                for (dog in viewModel.dogStatus.value?.data!!) {
-                                    ItemManager.add(dog)
-                                }
+                        while (viewModel.curUserMap.value == null || viewModel.curUserMap.value?.data == null) {
+                            delay(100)
+                        }
+                        binding.imgProfile.setImageBitmap(byteArrayToBitmap(viewModel.curUserMap.value?.data!!))
+                        if (ItemManager.items.isEmpty()) {
+                            while (viewModel.dogStatus.value == null || viewModel.dogStatus.value?.data == null) {
+                                delay(100)
+                            }
+                            for (dog in viewModel.dogStatus.value?.data!!) {
+                                ItemManager.add(dog)
+                            }
                         }
                     }
 
@@ -188,6 +193,7 @@ class ProfileFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.action_sign_out){
             viewModel.signOut()
+            ItemManager.items.clear()
             findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
 
